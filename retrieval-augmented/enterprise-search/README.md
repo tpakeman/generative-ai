@@ -68,9 +68,9 @@ response = chain.run({"query": query, "context": search_results})
 
 - [Enterprise Search/](/)
   - [Utilities](utils/)
-    - [Enterprise Search Retriever Class](/utils/retriever.py)
-  - [Questioning & Answering](/examples/question_answering.ipynb)
-  - [Document Summarization](/examples/summarization.ipynb)
+    - [Enterprise Search Retriever Class](utils/retriever.py)
+  - [Questioning & Answering](examples/question_answering.ipynb)
+  - [Document Summarization](examples/summarization.ipynb)
 
 
 For guidelines on contributing, environment setup and general contextual information on Generative AI and Google tools, please see the main [README](../README.md) in the repository root directory.
