@@ -10,9 +10,9 @@ _**TL;DR**: Large language models (LLMs) are most useful when we combine them wi
 
 **What is Enterprise Search?**
 
-[Enterprise Search](https://cloud.google.com/enterprise-search) is an offering from Google Cloud that lets organizations quickly build generative AI powered search engines for customers and employees.  The solution is provided as part of Gen App Builder within Google Cloud and also via API for integration with enterprise workflows or large languagde models.
+[Enterprise Search](https://cloud.google.com/enterprise-search) is an offering from Google Cloud that lets organizations quickly build generative AI powered search engines for customers and employees.  The solution is provided as part of Gen App Builder within Google Cloud and also via API for integration with enterprise workflows or large language models.
 
-To use it, upload documents, websites and databases and then users can retrieve the most relevant document chunks using natural language. The API is provided with specific configuration options which are designed to work well in conjunction with LLMs, such as customising the token length of retrieved document chunks.
+To use it, first upload data in the form of documents, websites or relational databases and then users can retrieve the most relevant document chunks using natural language. The API is provided with specific configuration options which are designed to work well in conjunction with LLMs, such as customising the token length of retrieved document chunks.
 
 **Using Enterprise Search**
 
