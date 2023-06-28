@@ -1,11 +1,11 @@
 """Retriever wrapper for Google Cloud Enterprise Search."""
 from __future__ import annotations
 
-import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from google.protobuf.json_format import MessageToDict
-from google.cloud.discoveryengine_v1beta  import SearchServiceClient, SearchRequest
+from google.cloud import discoveryengine_v1beta
+from google.cloud.discoveryengine_v1beta.services.search_service import pagers
 
 from pydantic import BaseModel, Extra, root_validator
 
@@ -52,7 +52,7 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
         max_snippet_count = get_from_dict_or_env(values, "max_snippet_count", "MAX_SNIPPET_COUNT")
         values["max_snippet_count"] = max_snippet_count
 
-        client = SearchServiceClient(credentials=values['credentials'])
+        client = discoveryengine_v1beta.SearchServiceClient(credentials=values['credentials'])
         values["client"] = client
 
         serving_config = client.serving_config_path(
@@ -65,14 +65,14 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
 
         content_search_spec = {
             'snippet_spec': {
-                'max_snippet_count': max_snippet_count, 
-            } 
+                'max_snippet_count': max_snippet_count,
+            }
         }
         values["content_search_spec"] = content_search_spec
 
         return values
 
-    def _convert_search_response(self, search_results):
+    def _convert_search_response(self, search_results: pagers.SearchPager) -> List[Document]:
         """Converts search response to a list of LangChain documents."""
         documents = []
         for result in search_results:
@@ -93,7 +93,7 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
 
     def get_relevant_documents(self, query: str) -> List[Document]:
         """Get documents relevant for a query."""
-        request = SearchRequest(
+        request = discoveryengine_v1beta.SearchRequest(
             query=query,
             serving_config=self.serving_config,
             content_search_spec=self.content_search_spec,

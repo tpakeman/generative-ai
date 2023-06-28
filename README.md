@@ -8,7 +8,7 @@ This repository contains notebooks and content that demonstrate how to use, deve
 ## Folder structure
 ```
 generative-ai/
-├── enterprise-search/                     - RAG using Enterprise Search
+├── gen-app-builder/                       - RAG using Gen App Builder / Enterprise Search
     ├── utils/
         └── retriever.py                   - utility classes for Enterprise Search
     ├── examples/
