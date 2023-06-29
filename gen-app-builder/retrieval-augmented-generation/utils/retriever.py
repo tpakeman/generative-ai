@@ -76,19 +76,17 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
         """Converts search response to a list of LangChain documents."""
         documents = []
         for result in search_results:
-            doc_info = MessageToDict(result.document._pb)
-            if doc_info.get('derivedStructData'):
-                for snippet in doc_info.get('derivedStructData', {}).get('snippets', []):
-                    if snippet.get('snippet') is not None:
-                        document = Document(
-                            page_content=snippet.get('snippet'),
-                            metadata={
-                                'source': f"{doc_info.get('derivedStructData').get('link')}:{snippet.get('pageNumber')}",
-                                'id': doc_info.get('id')
+            if hasattr(result.document, 'derived_struct_data'):
+                doc_data = result.document.derived_struct_data
+                for snippet in doc_data.get('snippets', []):
+                    documents.append(
+                        Document(
+                        page_content=snippet.get('snippet', ''),
+                        metadata={
+                            'source': f"{doc_data.get('link', '')}:{snippet.get('pageNumber', '')}",
+                            'id': result.document.id
                             }
-                        )
-                        documents.append(document)
-
+                    ))
         return documents
 
     def get_relevant_documents(self, query: str) -> List[Document]:
