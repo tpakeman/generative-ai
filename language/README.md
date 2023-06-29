@@ -6,7 +6,7 @@ Welcome to the Google Cloud [Generative AI](https://cloud.google.com/ai/generati
 ```
 generative-ai/
 ├── language/
-    ├── examples/             
+    ├── examples/
         ├── document-qa/             - examples for doc Q&A
         ├── document-summarization/  - examples for doc summarization
         ├── langchain/               - examples for langchain
@@ -38,4 +38,3 @@ generative-ai/
       - [Getting Started with LangChain 🦜️🔗 + Vertex AI PaLM API](examples/langchain-intro/intro_langchain_palm_api.ipynb)
     - [Tuning/](examples/tuning/)
       - [Tuning a Foundational Model, Deploying, and Making Predictions](examples/tuning/getting_started_tuning.ipynb)
-      

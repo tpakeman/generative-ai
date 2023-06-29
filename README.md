@@ -6,7 +6,7 @@ This repository contains notebooks and content that demonstrate how to use, deve
 
 
 ## Folder structure
-```
+```text
 generative-ai/
 ├── gen-app-builder/
     ├── search-web-app/                    - Demo of searching through document corpus using Enterprise Search

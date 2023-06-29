@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from google.protobuf.json_format import MessageToDict
 from google.cloud import discoveryengine_v1beta
 from google.cloud.discoveryengine_v1beta.services.search_service import pagers
 
@@ -14,13 +13,14 @@ from langchain.utils import get_from_dict_or_env
 
 class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
     """Wrapper around Google Cloud Enterprise Search."""
+
     client: Any = None #: :meta private:
     serving_config: Any = None #: :meta private:Any
     content_search_spec: Any = None #: :meta private:Any
     project_id: str = None
     search_engine_id: str = None
-    serving_config_id: str = 'default_config'
-    location_id: str = 'global'
+    serving_config_id: str = "default_config"
+    location_id: str = "global"
     max_snippet_count: int = 3
     credentials: Any = None
     "The default custom credentials (google.auth.credentials.Credentials) to use "
@@ -30,6 +30,7 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
 
     class Config:
         """Configuration for this pydantic object."""
+
         extra = Extra.forbid
         arbitrary_types_allowed = True
 
@@ -45,27 +46,31 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
 
         project_id = get_from_dict_or_env(values, "project_id", "PROJECT_ID")
         values["project_id"] = project_id
-        search_engine_id = get_from_dict_or_env(values, "search_engine_id", "SEARCH_ENGINE_ID")
+        search_engine_id = get_from_dict_or_env(
+            values, "search_engine_id", "SEARCH_ENGINE_ID"
+        )
         values["search_engine_id"] = search_engine_id
         location_id = get_from_dict_or_env(values, "location_id", "LOCATION_ID")
         values["location_id"] = location_id
-        max_snippet_count = get_from_dict_or_env(values, "max_snippet_count", "MAX_SNIPPET_COUNT")
+        max_snippet_count = get_from_dict_or_env(
+            values, "max_snippet_count", "MAX_SNIPPET_COUNT"
+        )
         values["max_snippet_count"] = max_snippet_count
 
-        client = discoveryengine_v1beta.SearchServiceClient(credentials=values['credentials'])
+        client = discoveryengine_v1beta.SearchServiceClient(credentials=values["credentials"])
         values["client"] = client
 
         serving_config = client.serving_config_path(
             project=project_id,
             location=location_id,
             data_store=search_engine_id,
-            serving_config=values['serving_config_id'],
+            serving_config=values["serving_config_id"],
         )
         values["serving_config"] = serving_config
 
         content_search_spec = {
-            'snippet_spec': {
-                'max_snippet_count': max_snippet_count,
+            "snippet_spec": {
+                "max_snippet_count": max_snippet_count,
             }
         }
         values["content_search_spec"] = content_search_spec
@@ -76,15 +81,15 @@ class EnterpriseSearchRetriever(BaseRetriever, BaseModel):
         """Converts search response to a list of LangChain documents."""
         documents = []
         for result in search_results:
-            if hasattr(result.document, 'derived_struct_data'):
+            if hasattr(result.document, "derived_struct_data"):
                 doc_data = result.document.derived_struct_data
-                for snippet in doc_data.get('snippets', []):
+                for snippet in doc_data.get("snippets", []):
                     documents.append(
                         Document(
-                        page_content=snippet.get('snippet', ''),
+                        page_content=snippet.get("snippet", ""),
                         metadata={
-                            'source': f"{doc_data.get('link', '')}:{snippet.get('pageNumber', '')}",
-                            'id': result.document.id
+                            "source": f"{doc_data.get('link', '')}:{snippet.get('pageNumber', '')}",
+                            "id": result.document.id
                             }
                     ))
         return documents
